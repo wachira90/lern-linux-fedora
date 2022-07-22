@@ -1,0 +1,206 @@
+# INSTALL VIRT FEDORA 35
+dnf -y install qemu-kvm libvirt virt-install
+
+# VIRTUAL ON COCKPIT
+dnf install qemu-kvm-core libvirt virt-install cockpit-machines guestfs-tools -y
+
+dnf install virt-viewer -y
+
+lsmod | grep kvm
+
+
+systemctl enable --now libvirtd
+systemctl restart --now libvirtd
+
+enp9s0
+
+# CREATE br0 INTERFACE
+nmcli connection add type bridge autoconnect yes con-name br0 ifname br0
+
+
+[root@kvm1 ~]# nmcli connection add type bridge autoconnect yes con-name br0 ifname br0
+Connection 'br0' (c8d02dc9-d5d5-476d-a8e0-3186c7156550) successfully added.
+[root@kvm1 ~]#
+
+# SET IPADDRESS
+nmcli connection modify br0 ipv4.addresses 10.0.0.30/24 ipv4.method manual
+
+nmcli connection modify br0 ipv4.addresses 192.168.4.136/24 ipv4.method manual
+
+(after run command to on off interface )
+
+# DISABLE IPV6
+nmcli connection modify br0 ipv6.method "disabled"
+
+
+
+# GATEWAY
+nmcli connection modify br0 ipv4.gateway 10.0.0.1
+nmcli connection modify br0 ipv4.gateway 192.168.4.1
+
+# DNS
+nmcli connection modify br0 ipv4.dns 10.0.0.10
+nmcli connection modify br0 ipv4.dns 192.168.4.1
+
+# DNS-SEARCH
+nmcli connection modify br0 ipv4.dns-search srv.world
+
+# REMOVE CURRENT INTERFACE
+nmcli connection del enp1s0
+
+# ADD REMOVE INTERFACE
+# add the removed interface again as a member of [br0]
+nmcli connection add type bridge-slave autoconnect yes con-name enp1s0 ifname enp1s0 master br0
+
+# SHOW INTERFACE
+[root@kvm1 ~]# nmcli connection show
+NAME     UUID                                  TYPE      DEVICE
+br0      c8d02dc9-d5d5-476d-a8e0-3186c7156550  bridge    br0
+enp9s0   31794dca-757b-44c6-80ff-867ed0aa7637  ethernet  enp9s0
+enp10s0  59c8d24d-4352-4dc5-906e-0c4b25270211  ethernet  --
+[root@kvm1 ~]#
+
+
+nmcli connection up br0
+
+==========CREATE WITH UEFI==============
+
+virt-install \
+--name Win2k19 \
+--ram 6144 \
+--disk path=/var/newvol/Win2k19.img,size=500 \
+--vcpus=4 \
+--os-type windows \
+--os-variant=win2k19 \
+--network bridge=br0 \
+--graphics vnc,listen=0.0.0.0,password=password \
+--video qxl \
+--cdrom /var/newvol/iso/en_windows_server_2019_x64_dvd_4cb967d8.iso \
+--boot uefi
+
+
+****UNIT DISK GB
+
+=========2022 uefi===============
+
+virt-install \
+--name Win2k22 \
+--ram 8192 \
+--disk path=/var/newvol/Win2k22.img,size=500 \
+--vcpus=4 \
+--os-type windows \
+--os-variant=win2k22 \
+--network bridge=br0 \
+--graphics vnc,listen=0.0.0.0,password=password \
+--video qxl \
+--cdrom /var/newvol/iso/20348.169.210806-2348.fe_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso \
+--boot uefi
+
+=========================
+
+# LIST NAME OS
+[root@kvm1 iso]# osinfo-query os
+
+
+
+
+Upgrading Windows Server 2022 Standard Evaluation to Full Edition
+
+Dism /Online /Get-CurrentEdition
+This command will show you the current edition of your Windows Server
+
+Dism /Online /Get-TargetEditions
+This command will show the edition of the Windows that you can upgrade to
+
+Dism /online /Set-Edition:ServerStandard  /ProductKey:VDYBN-27WPP-V4HQT-9VMD4-VMK7H /AcceptEula
+This command will upgrade the server to Standard Full Edition
+
+Dism /online /Set-Edition:ServerDatacenter  /ProductKey:WX4NM-KYWYW-QJJR4-XV3QB-6VM33 /AcceptEula
+This command will upgrade the server to DataCenter Full Edition
+
+=============2019===========
+
+Dism /online /Set-Edition:ServerStandard  /ProductKey:N69G4-B89J2-4G8F4-WWYCC-J464C /AcceptEula
+
+Windows Server 2019 Standard	N69G4-B89J2-4G8F4-WWYCC-J464C
+Windows Server 2019 Datacenter	WMDGN-G9PQG-XVVXX-R3X43-63DFG
+
+slmgr.vbs /ipk N69G4-B89J2-4G8F4-WWYCC-J464C
+
+
+Dism /online /Set-Edition:ServerDatacenter /ProductKey:WMDGN-G9PQG-XVVXX-R3X43-63DFG /AcceptEula
+========================
+
+slmgr /skms kms7.msguides.com
+slmgr /skms kms8.msguides.com
+slmgr /skms kms8.msguides.com
+
+
+# Creation of VM WINSERVER2022 failed 
+ERROR The requested volume capacity will exceed the available pool space when the volume is fully allocated. (512000 M requested capacity > 7376 M available) (Use --check disk_size=off or --check all=off to override)
+
+
+
+
+
+--check disk_size=off
+
+
+/var/kvm/images
+
+/var/kvm/images/iso/
+
+/var/kvm/images/iso/FP5C3A00_WS22_MUL_STD.iso
+
+# Fedora
+/var/newvol/iso/Fedora-Server-dvd-x86_64-35-1.2.iso
+
+# WS2022
+/var/newvol/iso/20348.169.210806-2348.fe_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso
+
+# WS2012
+/var/newvol/iso/W2012_RTM.120725-1247_X64FRE_SERVER_EVAL_EN-US-HRM_SSS_X64FREE_EN-US_DV5.ISO
+
+cd /var/newvol/
+
+
+/var/kvm/images/data/
+
+
+data1_pool1
+
+
+Failed to rename VM WS2016
+cannot create file '/etc/libvirt/qemu/WS2022.xml.new': No space left on device
+
+/etc/libvirt/qemu/WS2022.xml.new
+
+/etc/libvirt/qemu/WS2016.xml
+
+/etc/libvirt/qemu/*.xml
+
+/var/run/libvirt/qemu/*.xml
+
+QemuXML - file /etc/libvirt/qemu/*.xml and /var/run/libvirt/qemu/*.xml
+
+Parsers provided by this module are:
+QemuXML =>  file /etc/libvirt/qemu/*.xml
+VarQemuXML => file /var/run/libvirt/qemu/*.xml
+OpenStackInstanceXML => file /etc/libvirt/qemu/*.xml
+
+
+
+
+DRK-PS9671BL-3 Draka #PS9671BL-3,U/UTP CAT6 SLIMF PATCH CORD BLUE LSZH 3M-Slimf
+DRK-PS9671BL-5 Draka #PS9671BL-5,U/UTP CAT6 SLIMF PATCH CORD (color)LSZH 5M, 28AWG,BLUE PLUG
+
+
+
+/var/newvol/iso/en_windows_server_2019_x64_dvd_4cb967d8.iso
+
+/var/newvol/WS2019
+
+/var/newvol/iso/virtio-win.iso
+
+
+https://forums.unraid.net/topic/79175-solved-server-2019-cant-find-vdisk-to-install-to/
