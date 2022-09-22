@@ -98,6 +98,24 @@ reset password for uid=sadmin,ou=people,dc=inno,dc=local
 [root@fedora-ansible ~]#
 ````
 
+## CREATE GROUP
+
+````
+[root@fedora-ansible ~]# dsidm localhost group create
+Enter value for cn : serveradmin
+Successfully created serveradmin
+[root@fedora-ansible ~]#
+````
+
+## ADD USER TO GROUP
+
+````
+[root@fedora-ansible ~]# dsidm localhost group add_member serveradmin uid=sadmin,ou=people,dc=inno,dc=local
+added member: uid=sadmin,ou=people,dc=inno,dc=local
+[root@fedora-ansible ~]# dsidm localhost group add_member serveradmin uid=wachira,ou=people,dc=inno,dc=local
+added member: uid=wachira,ou=people,dc=inno,dc=local
+[root@fedora-ansible ~]#
+````
 
 
 
