@@ -173,3 +173,8 @@ dsidm localhost user get wachira
 (memberOf: cn=serveradmin,ou=groups,dc=inno,dc=local)
 
 ````
+
+
+https://directory.fedoraproject.org/docs/389ds/howto/quickstart.html
+
+
