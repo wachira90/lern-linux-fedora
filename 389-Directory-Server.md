@@ -138,4 +138,10 @@ dsidm localhost user modify sadmin "add:description:sadmin administrator user"
 dsidm localhost user get sadmin
 ````
 
+## REPLACE DELETE
+
+````
+dsidm localhost user modify sadmin "replace:description:New Description"
+dsidm localhost user modify sadmin "delete:description:New Description"
+````
 
