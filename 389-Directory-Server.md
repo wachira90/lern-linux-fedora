@@ -145,3 +145,14 @@ dsidm localhost user modify sadmin "replace:description:New Description"
 dsidm localhost user modify sadmin "delete:description:New Description"
 ````
 
+## CHECK ADD PLUGIN 'memberof' RESTART
+````
+[root@fedora-ansible ~]# dsconf localhost plugin memberof status
+Plugin 'MemberOf Plugin' is disabled
+[root@fedora-ansible ~]# dsconf localhost plugin memberof enable
+Enabled plugin 'MemberOf Plugin'
+[root@fedora-ansible ~]# dsctl localhost restart
+Instance "localhost" has been restarted
+[root@fedora-ansible ~]#
+````
+
