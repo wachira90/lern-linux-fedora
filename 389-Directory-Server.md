@@ -131,4 +131,11 @@ dn: uid=sadmin,ou=people,dc=inno,dc=local
 
 #### To make this permanent, put 'TLS_CACERT /etc/dirsrv/slapd-localhost/ca.crt' into '/etc/openldap/ldap.conf'
 
+## ADD DESCRIPTION 'sadmin administrator user'
+````
+dsidm localhost user modify sadmin "add:description:sadmin administrator user"
+
+dsidm localhost user get sadmin
+````
+
 
