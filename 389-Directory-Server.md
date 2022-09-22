@@ -118,4 +118,17 @@ added member: uid=wachira,ou=people,dc=inno,dc=local
 ````
 
 
+## TEST CONNECT 
+````
+[root@fedora-ansible ~]# ldapwhoami -H ldaps://localhost -D uid=sadmin,ou=people,dc=inno,dc=local -W -x
+Enter LDAP Password:
+ldap_sasl_bind(SIMPLE): Can't contact LDAP server (-1)
+[root@fedora-ansible ~]# LDAPTLS_CACERT=/etc/dirsrv/slapd-localhost/ca.crt ldapwhoami -H ldaps://localhost -D uid=sadmin,ou=people,dc=inno,dc=local -W -x
+Enter LDAP Password:
+dn: uid=sadmin,ou=people,dc=inno,dc=local
+[root@fedora-ansible ~]#
+````
+
+#### To make this permanent, put 'TLS_CACERT /etc/dirsrv/slapd-localhost/ca.crt' into '/etc/openldap/ldap.conf'
+
 
