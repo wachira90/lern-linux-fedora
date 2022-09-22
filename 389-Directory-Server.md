@@ -1,5 +1,21 @@
 # 389 Directory Server
 
+## INSTALL 
+````
+dnf install 389-ds-base
+````
+
+## COMMAND
+
+389 Directory Server is controlled by 3 primary commands.
+
+`dsctl`: This manages a local instance, requiring root permissions. This starts, stops, backs-up and more.
+
+`dsconf`: Manage a remote or local instance configuration. This requires cn=Directory Manager. It changes settings of the server and is the primary tool you will use for administration of config.
+
+`dsidm`: Manage content inside of a backend, with an identity management focus. The permissions of this tool are granted by access controls, and can even be used for some limited self service actions.
+
+
 ## CREATE FILE INSTANCE
 
 ````
