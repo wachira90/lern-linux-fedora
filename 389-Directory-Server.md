@@ -156,3 +156,20 @@ Instance "localhost" has been restarted
 [root@fedora-ansible ~]#
 ````
 
+````
+dsconf localhost plugin memberof set --scope dc=inno,dc=local
+
+
+[root@fedora-ansible ~]# dsconf localhost plugin memberof set --scope dc=inno,dc=local
+Successfully changed the cn=MemberOf Plugin,cn=plugins,cn=config
+[root@fedora-ansible ~]#
+
+
+dsidm localhost user modify wachira add:objectclass:nsmemberof
+dsidm localhost user get wachira
+dsconf localhost plugin memberof fixup dc=inno,dc=local
+dsidm localhost user get wachira
+
+(memberOf: cn=serveradmin,ou=groups,dc=inno,dc=local)
+
+````
