@@ -88,3 +88,16 @@ uidNumber: 1000
 
 [root@fedora-ansible ~]#
 ````
+
+## RESET PASSWORD
+````
+[root@fedora-ansible ~]# dsidm localhost account reset_password uid=sadmin,ou=people,dc=inno,dc=local
+Enter new password for uid=sadmin,ou=people,dc=inno,dc=local :
+CONFIRM - Enter new password for uid=sadmin,ou=people,dc=inno,dc=local :
+reset password for uid=sadmin,ou=people,dc=inno,dc=local
+[root@fedora-ansible ~]#
+````
+
+
+
+
